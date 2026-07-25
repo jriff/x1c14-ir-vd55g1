@@ -1,0 +1,6 @@
+Jul 25 11:28:46 jrx1 kernel: intel-ipu7 0000:00:05.0: Found supported sensor TBE20A0:00
+Jul 25 11:28:46 jrx1 kernel: intel-ipu7 0000:00:05.0: Found supported sensor TBE20A1:00
+Jul 25 11:28:46 jrx1 kernel: vd55g1 i2c-TBE20A1:00: supply vcore not found, using dummy regulator
+Jul 25 11:28:46 jrx1 kernel: vd55g1 i2c-TBE20A1:00: supply vddio not found, using dummy regulator
+Jul 25 11:28:47 jrx1 kernel: intel_ipu7_isys.isys intel_ipu7.isys.40: bind vd55g1 1-0010 nlanes is 1 port is 2
+Jul 25 11:28:47 jrx1 kernel: intel_ipu7_isys.isys intel_ipu7.isys.40: bind imx471 0-001a nlanes is 4 port is 0
