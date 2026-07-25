@@ -1,0 +1,26 @@
+From: Jacob Riff <jacob@riff.dk>
+Subject: [PATCH 2/4] media: ipu-bridge: Add ST VD55G1 sensor for Lenovo X1 Carbon Gen 14
+
+The IR camera on the Lenovo ThinkPad X1 Carbon Gen 14 is an ST VD55G1
+behind ACPI HID "TBE20A1" (sibling of the "TBE20A0" IMX471 RGB sensor
+on the same machines). Single CSI-2 lane; 600 MHz link frequency
+verified streaming on hardware (804x704 @ 30fps, Y10).
+
+Identification: chip-id readback via the vd55g1 driver (model id
+0x53354731), matching the sensor named in the tuning metadata of
+Lenovo's Windows driver package for this ACPI ID.
+
+Tested-on: Lenovo ThinkPad X1 Carbon Gen 14 21V7CTO1WW, kernel 7.1.4
+Signed-off-by: Jacob Riff <jacob@riff.dk>
+---
+--- a/drivers/media/pci/intel/ipu-bridge.c
++++ b/drivers/media/pci/intel/ipu-bridge.c
+@@ -100,6 +100,8 @@
+ 	IPU_SENSOR_CONFIG("SONY471A", 1, 200000000),
+     /* Sony IMX471 (found on Lenovo X1 Carbon G14) */
+ 	IPU_SENSOR_CONFIG("TBE20A0", 1, 200000000),
++	/* ST VD55G1 IR camera (Lenovo X1 Carbon G14) */
++	IPU_SENSOR_CONFIG("TBE20A1", 1, 600000000),
+ 	/* Toshiba T4KA3 */
+ 	IPU_SENSOR_CONFIG("XMCC0003", 1, 321468000),
+ };

@@ -1,0 +1,29 @@
+From: Jacob Riff <jacob@riff.dk>
+Subject: [PATCH 3/4] platform/x86: int3472: Map power enable to "vana" for VD55G1 (TBE20A1)
+
+The vd55g1 driver requests its supplies as "vcore"/"vddio"/"vana". On
+the Lenovo ThinkPad X1 Carbon Gen 14 the IR camera module has a single
+INT3472-managed power-enable GPIO; map it to "vana" so the driver's
+regulator_bulk_enable() actually powers the sensor (same pattern as the
+IMX471 entries for SONY471A/TBE20A0). Without this the rail maps to a
+dummy regulator and probing fails.
+
+Tested-on: Lenovo ThinkPad X1 Carbon Gen 14 21V7CTO1WW, kernel 7.1.4
+Signed-off-by: Jacob Riff <jacob@riff.dk>
+---
+--- a/drivers/platform/x86/intel/int3472/discrete.c
++++ b/drivers/platform/x86/intel/int3472/discrete.c
+@@ -182,6 +182,13 @@
+ 		.con_id = "vana",
+ 		.enable_time_us = GPIO_REGULATOR_ENABLE_TIME,
+ 	},
++	{	/* vd55g1 IR cam (Lenovo X1 Carbon G14): power enable -> "vana" */
++		.hid = "TBE20A1",
++		.type_from = INT3472_GPIO_TYPE_POWER_ENABLE,
++		.type_to = INT3472_GPIO_TYPE_POWER_ENABLE,
++		.con_id = "vana",
++		.enable_time_us = GPIO_REGULATOR_ENABLE_TIME,
++	},
+ };
+ 
+ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3472, u8 *type,

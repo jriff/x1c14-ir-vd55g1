@@ -1,0 +1,7 @@
+src/*.o
+src/*.ko
+src/*.mod*
+src/.*.cmd
+src/Module.symvers
+src/modules.order
+src/.module-common*

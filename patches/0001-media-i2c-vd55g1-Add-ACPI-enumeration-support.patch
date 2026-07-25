@@ -1,0 +1,42 @@
+From: Jacob Riff <jacob@riff.dk>
+Subject: [PATCH 1/4] media: i2c: vd55g1: Add ACPI enumeration support
+
+The ST VD55G1 is used as the IR camera on the Lenovo ThinkPad X1 Carbon
+Gen 14 (at least type 21V7), connected to the Intel IPU7 and enumerated
+via ACPI with the Lenovo HID "TBE20A1" (ipu-bridge provides the software
+nodes, the same way the IMX471 RGB sensor on these machines works).
+
+Add an ACPI match table so the driver can probe on these systems. The
+driver's existing model-id readback verified the sensor on real
+hardware (CCI model id 0x53354731, mono variant).
+
+Tested-on: Lenovo ThinkPad X1 Carbon Gen 14 21V7CTO1WW, kernel 7.1.4
+Signed-off-by: Jacob Riff <jacob@riff.dk>
+---
+--- a/drivers/media/i2c/vd55g1.c
++++ b/drivers/media/i2c/vd55g1.c
+@@ -2039,6 +2039,16 @@
+ };
+ MODULE_DEVICE_TABLE(of, vd55g1_dt_ids);
+ 
++/*
++ * IR camera on Lenovo ThinkPad X1 Carbon Gen 14 (VD55G1 behind Lenovo
++ * ACPI HID TBE20A1); enumerated via ipu-bridge like the other IPU7 sensors.
++ */
++static const struct acpi_device_id vd55g1_acpi_ids[] = {
++	{ "TBE20A1", VD55G1_MODEL_ID_VD55G1 },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(acpi, vd55g1_acpi_ids);
++
+ static const struct dev_pm_ops vd55g1_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(vd55g1_power_off, vd55g1_power_on, NULL)
+ };
+@@ -2047,6 +2057,7 @@
+ 	.driver = {
+ 		.name  = "vd55g1",
+ 		.of_match_table = vd55g1_dt_ids,
++		.acpi_match_table = vd55g1_acpi_ids,
+ 		.pm = &vd55g1_pm_ops,
+ 	},
+ 	.probe = vd55g1_probe,

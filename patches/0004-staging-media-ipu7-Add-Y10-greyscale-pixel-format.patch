@@ -1,0 +1,26 @@
+From: Jacob Riff <jacob@riff.dk>
+Subject: [PATCH 4/4] staging: media: ipu7: Add Y10 greyscale pixel format
+
+MEDIA_BUS_FMT_Y10_1X10 is already accepted by the CSI2 subdev
+(csi2_supported_codes) and mapped to MIPI_CSI2_DT_RAW10, but no video
+node pixel format references it, so mono sensors negotiate the subdev
+chain and then fail VIDIOC_STREAMON with EPIPE. Add the missing
+V4L2_PIX_FMT_Y10 entry, mirroring the 10-bit Bayer rows.
+
+Needed for the ST VD55G1 IR camera on the Lenovo ThinkPad X1 Carbon
+Gen 14; verified streaming Y10 804x704 on hardware.
+
+Tested-on: Lenovo ThinkPad X1 Carbon Gen 14 21V7CTO1WW, kernel 7.1.4
+Signed-off-by: Jacob Riff <jacob@riff.dk>
+---
+--- a/drivers/staging/media/ipu7/ipu7-isys-video.c
++++ b/drivers/staging/media/ipu7/ipu7-isys-video.c
+@@ -54,6 +54,8 @@
+ 	 IPU_INSYS_FRAME_FORMAT_RAW16},
+ 	{V4L2_PIX_FMT_SRGGB10, 16, 10, MEDIA_BUS_FMT_SRGGB10_1X10,
+ 	 IPU_INSYS_FRAME_FORMAT_RAW16},
++	{V4L2_PIX_FMT_Y10, 16, 10, MEDIA_BUS_FMT_Y10_1X10,
++	 IPU_INSYS_FRAME_FORMAT_RAW16},
+ 	{V4L2_PIX_FMT_SBGGR8, 8, 8, MEDIA_BUS_FMT_SBGGR8_1X8,
+ 	 IPU_INSYS_FRAME_FORMAT_RAW8},
+ 	{V4L2_PIX_FMT_SGBRG8, 8, 8, MEDIA_BUS_FMT_SGBRG8_1X8,
