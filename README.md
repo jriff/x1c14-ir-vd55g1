@@ -1,6 +1,19 @@
 # IR camera (ST VD55G1) on ThinkPad X1 Carbon Gen 14 — working on Linux
 
-**Status: streaming.** Y10 mono, 804x704 @ 30 fps, working auto-exposure,
+> **Archived, November 2026.** This repository is kept for reference and is not maintained.
+>
+> - **Patches 1–3 are upstream in Linux 7.4** (by Ruslan Koreev): the `vd55g1` ACPI match, the
+>   `ipu-bridge` entry and the `int3472` "vana" mapping. Upstream uses a link frequency of
+>   402 MHz, not the 600 MHz below.
+> - **Patch 4 (the IPU7 `Y10` pixel format) is not upstream.** Without it, the sensor enumerates
+>   but stream start fails.
+> - **`install.sh` and `revert.sh` work only up to kernel 7.2.** They patch the source tree of
+>   the AUR package `imx471-dkms-git`. From 7.3 the kernel drives the RGB camera itself, and
+>   that package is not needed.
+>
+> The sensor identification below is still correct. The rest describes the July 2026 setup.
+
+**Status (July 2026): streaming.** Y10 mono, 804x704 @ 30 fps, working auto-exposure,
 captured on a retail 21V7CTO1WW (2.8K OLED) under Arch Linux / Omarchy,
 kernel 7.1.4 — concurrently with the IMX471 RGB camera on the same IPU7.
 
